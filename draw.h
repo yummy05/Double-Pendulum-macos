@@ -1,13 +1,11 @@
 #include <iostream>
-#include <windows.h>
-
 constexpr int WIDTH = 1000,HEIGHT = 600;
 constexpr int dW=8,dH=16;
 
-void gotoxy ( short x, short y )
+
+void gotoxy(int x, int y)
 {
-COORD coord = {x, y};
-SetConsoleCursorPosition ( GetStdHandle ( STD_OUTPUT_HANDLE ), coord );
+    printf("\033[%d;%dH", y, x);
 }
 
 void plotLineLow(char platno[HEIGHT/dH][WIDTH/dW+1],int x0,int y0,int x1,int y1,char c);
