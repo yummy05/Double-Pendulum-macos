@@ -1,27 +1,28 @@
 #include <iostream>
 #include "draw.h"
 #include <cmath>
-#include <conio.h>
 #include <cstdlib>
-#include <chrono>
+#include <ctime>
+
 #define M_PI 3.14159265358979323846
 using namespace std;
 
 class Timer
 {
 public:
-    Timer() : beg_(clock_::now()) {}
-    void reset() { beg_ = clock_::now(); }
-    float elapsed() const { 
-        return std::chrono::duration_cast<second_>
-            (clock_::now() - beg_).count(); }
+    Timer() { clock_gettime(CLOCK_REALTIME, &beg_); }
+
+    double elapsed() {
+        clock_gettime(CLOCK_REALTIME, &end_);
+        return end_.tv_sec - beg_.tv_sec +
+            (end_.tv_nsec - beg_.tv_nsec) / 1000000000.;
+    }
+
+    void reset() { clock_gettime(CLOCK_REALTIME, &beg_); }
 
 private:
-    typedef std::chrono::high_resolution_clock clock_;
-    typedef std::chrono::duration<float, std::ratio<1> > second_;
-    std::chrono::time_point<clock_> beg_;
+    timespec beg_, end_;
 };
-
 int main()
 {
 	constexpr int n=10000;
